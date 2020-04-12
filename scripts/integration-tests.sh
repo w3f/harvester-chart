@@ -18,6 +18,8 @@ main(){
         trap teardown EXIT
     fi
 
+    kubectl create namespace harvester
+
     source /scripts/build-helmfile.sh
 
     run_tests

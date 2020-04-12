@@ -4,15 +4,11 @@ image:
   repo: web3f/harvester
   tag: latest
 
-namespace:
-  create: false
-  name: harvester
-
 db:
   name: test
   host: mariadb
   port: 3306
-  user: root
+  user: user
   password: pass
 
 polkadotRPC: "http://polkadot:9933"

@@ -1,0 +1,87 @@
+version: 2
+
+jobs:
+  buildImage:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+            /scripts/build-image.sh web3f/harvester .
+
+  helmLint:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    steps:
+      - checkout
+      - run:
+          command: |
+            helm lint ./charts/harvester
+
+  integrationTests:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          description: run integration tests
+          command: |
+            /scripts/integration-tests.sh
+
+  publishImage:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+            /scripts/publish-image.sh web3f/harvester
+
+  publishChart:
+    docker:
+      - image: web3f/ci-commons:v2.0.1
+    steps:
+      - checkout
+      - run:
+          command: |
+            /scripts/publish-chart.sh
+
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - helmLint:
+          filters:
+            tags:
+              only: /.*/
+      - buildImage:
+          filters:
+            tags:
+              only: /.*/
+      - integrationTests:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - buildImage
+            - helmLint
+      - publishImage:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+          requires:
+            - integrationTests
+      - publishChart:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+          requires:
+            - integrationTests

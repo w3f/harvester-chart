@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 if [ -z $ENVIRONMENT ] || [ "$ENVIRONMENT" = "dev" ]; then
-    ENVIRONMENT="dev"
+    ENVIRONMENT="prod"
 fi
 
 echo "==========================="
@@ -17,14 +17,12 @@ fi
 echo "Running migrations..."
 
 # Run migrations
-export PYTHONPATH='/usr/src/app':$PYTHONPATH
+export PYTHONPATH=/usr/src/app:/usr/src/app/py-substrate-interface/:/usr/src/app/py-scale-codec/:$PYTHONPATH
 alembic upgrade head
 
 echo "Running gunicorn..."
 
 if [ "$ENVIRONMENT" = "dev" ]; then
-    # Set path
-    export PYTHONPATH=$PYTHONPATH:./py-substrate-interface/:./py-scale-codec/
     gunicorn -b 0.0.0.0:8001 --workers=2 app.main:app --reload --chdir /usr/src/app
 fi
 

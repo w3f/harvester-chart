@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace.name }}
   labels:
     app: {{ .Release.Name }}
 spec:
@@ -49,13 +49,13 @@ spec:
               name: {{ .Release.Name }}
               key: db-password
         - name: DB_NAME
-          value: {{ .Values.db.name }}
+          value: {{ .Values.db.name | quote }}
         - name: DB_HOST
-          value: {{ .Values.db.host }}
+          value: {{ .Values.db.host | quote }}
         - name: DB_PORT
-          value: {{ .Values.db.port }}
+          value: {{ .Values.db.port | quote }}
         - name: SUBSTRATE_RPC_URL
-          value: {{ .Values.polkkadotRPC }}
+          value: {{ .Values.polkkadotRPC | quote }}
       volumes:
       - name: config
         configMap:

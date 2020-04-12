@@ -55,7 +55,7 @@ spec:
         - name: DB_PORT
           value: {{ .Values.db.port | quote }}
         - name: SUBSTRATE_RPC_URL
-          value: {{ .Values.polkkadotRPC | quote }}
+          value: {{ .Values.polkadotRPC | quote }}
       volumes:
       - name: config
         configMap:

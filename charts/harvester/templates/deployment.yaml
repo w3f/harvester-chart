@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: endpoint
+          containerPort: {{ .Values.port }}
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: {{ .Values.port }}
+          initialDelaySeconds: 10
+          timeoutSeconds: 200
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: {{ .Values.port }}
+          initialDelaySeconds: 10
+          timeoutSeconds: 200
+        {{ if ne .Values.environment "ci" }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        {{ end }}
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}
+              key: db-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}
+              key: db-password
+        - name: DB_NAME
+          value: {{ .Values.db.name | quote }}
+        - name: DB_HOST
+          value: {{ .Values.db.host | quote }}
+        - name: DB_PORT
+          value: {{ .Values.db.port | quote }}
+        - name: SUBSTRATE_RPC_URL
+          value: {{ .Values.polkadotRPC | quote }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Release.Name }}

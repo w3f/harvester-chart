@@ -1,0 +1,24 @@
+environment: production
+
+image:
+  repo: web3f/harvester
+  tag: latest
+
+db:
+  name: test
+  host: mariadb
+  port: 3306
+  user: user
+  password: pass
+
+polkadotRPC: "http://polkadot:9933"
+
+port: 8000
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 500Mi

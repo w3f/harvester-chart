@@ -1,0 +1,4 @@
+db:
+  name: {{ env "DB_NAME" | default "test" | quote }}
+  user: {{ env "DB_USERNAME" | default "user" | quote }}
+  password: {{ env "DB_PASSWORD" | default "pass" | quote }}

@@ -17,8 +17,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   apt-get purge --auto-remove -y \
   build-essential \
   git \
-  libc-dev
+  libc-dev && \
+  useradd -m -u 1000 -U -s /bin/sh -d /home/harvester harvester && \
+	mkdir -p /home/harvester && \
+	chown -R harvester:harvester /home/harvester
 
 COPY ./scripts/start.sh /usr/src/app/start.sh
-
+USER harvester
 ENTRYPOINT ["/usr/src/app/start.sh"]

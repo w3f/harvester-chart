@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libc-dev && \
   useradd -m -u 1000 -U -s /bin/sh -d /home/harvester harvester && \
 	mkdir -p /home/harvester && \
-	chown -R harvester:harvester /home/harvester
+	chown -R harvester:harvester /home/harvester /usr/src/app
 
-COPY ./scripts/start.sh /usr/src/app/start.sh
 USER harvester
+COPY ./scripts/start.sh /usr/src/app/start.sh
 ENTRYPOINT ["/usr/src/app/start.sh"]

@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libc-dev && \
   pip3 install --upgrade pip && \
   git clone https://github.com/polkascan/polkascan-pre-harvester.git . && \
+  git checkout 706627528c00a3350064a32029098c23131f6fa6 && \
   git submodule update --init && \
   pip3 install -r requirements.txt && \
   apt-get purge --auto-remove -y \

@@ -12,3 +12,9 @@ environment: ci
 image:
   tag: {{ env "CIRCLE_SHA1" }}
 {{ end }}
+
+polkadotRPC: "http://kusama-internal-rpc:9933"
+
+celery:
+  broker: "redis://redis-headless:6379/0"
+  backend: "redis://redis-headless:6379/0"

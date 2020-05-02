@@ -1,0 +1,16 @@
+name: kusama-internal
+deploymentName: kusama-internal
+p2pPort: 30333
+chainspec:
+  custom: false
+  preset: true
+  name: "kusama"
+validator: false
+extraBootnodes: []
+image:
+  repo: parity/polkadot
+  tag: v0.7.32
+local: true
+unsafeEndpointAccess: true
+sessionInjection:
+  enabled: false

@@ -8,18 +8,6 @@ echo "==========================="
 echo "Environment: $ENVIRONMENT"
 echo "==========================="
 
-if [ "$ENVIRONMENT" = "prod" ]; then
-  echo "Wait for database..."
-  # Let the DB start
-  sleep 10;
-fi
-
-echo "Running migrations..."
-
-# Run migrations
-export PYTHONPATH=/usr/src/app:/usr/src/app/py-substrate-interface/:/usr/src/app/py-scale-codec/:$PYTHONPATH
-alembic upgrade head
-
 echo "Running gunicorn..."
 
 if [ "$ENVIRONMENT" = "dev" ]; then

@@ -19,6 +19,20 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
+      initContainers:
+      - name: wait-for-mariadb
+        image: mysql
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - while ! mysqladmin ping -h"{{ .Values.db.host }}" --silent; do sleep 3; done;
+      - name: run-migrations
+        image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - export PYTHONPATH=/usr/src/app:/usr/src/app/py-substrate-interface/:/usr/src/app/py-scale-codec/:$PYTHONPATH;
+          alembic upgrade head
       containers:
       - name: {{ .Release.Name }}-api
         image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
@@ -47,8 +61,8 @@ spec:
       - name: {{ .Release.Name }}-worker
         image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
-        command:
-        - celery
+        command: ["celery"]
+        args:
         - -A
         - app.tasks
         - worker

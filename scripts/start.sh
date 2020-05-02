@@ -8,6 +8,13 @@ echo "==========================="
 echo "Environment: $ENVIRONMENT"
 echo "==========================="
 
+echo "Running migrations..."
+
+# Run migrations
+# Set path
+export PYTHONPATH=$PYTHONPATH:$PWD:$PWD/py-substrate-interface/:$PWD/py-scale-codec/
+alembic upgrade head
+
 echo "Running gunicorn..."
 
 if [ "$ENVIRONMENT" = "dev" ]; then

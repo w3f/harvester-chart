@@ -6,7 +6,7 @@ source /scripts/bootstrap-helm.sh
 run_tests() {
     echo Running tests...
 
-    wait_pod_ready harvester harvester
+    wait_pod_ready harvester harvester 3/3
 }
 
 teardown() {

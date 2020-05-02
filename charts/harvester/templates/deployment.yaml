@@ -20,7 +20,7 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
       containers:
-      - name: {{ .Release.Name }}
+      - name: {{ .Release.Name }}-api
         image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
         ports:
@@ -28,40 +28,56 @@ spec:
           containerPort: {{ .Values.port }}
         livenessProbe:
           httpGet:
-            path: /status
+            path: /healthcheck
             port: {{ .Values.port }}
           initialDelaySeconds: 10
           timeoutSeconds: 200
         readinessProbe:
           httpGet:
-            path: /healthcheck
+            path: /status
             port: {{ .Values.port }}
-          initialDelaySeconds: 10
+          initialDelaySeconds: 20
           timeoutSeconds: 200
         {{ if ne .Values.environment "ci" }}
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.api.resources | indent 10 }}
         {{ end }}
         env:
-        - name: DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}
-              key: db-user
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}
-              key: db-password
-        - name: DB_NAME
-          value: {{ .Values.db.name | quote }}
-        - name: DB_HOST
-          value: {{ .Values.db.host | quote }}
-        - name: DB_PORT
-          value: {{ .Values.db.port | quote }}
-        - name: SUBSTRATE_RPC_URL
-          value: {{ .Values.polkadotRPC | quote }}
-      volumes:
-      - name: config
-        configMap:
-          name: {{ .Release.Name }}
+{{ include "harvester.api-worker-env" . | indent 8 }}
+      - name: {{ .Release.Name }}-worker
+        image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+        imagePullPolicy: IfNotPresent
+        command:
+        - celery
+        - -A
+        - app.tasks
+        - worker
+        - --loglevel=INFO
+        ports:
+        - name: endpoint
+          containerPort: {{ .Values.port }}
+        {{ if ne .Values.environment "ci" }}
+        resources:
+{{ toYaml .Values.worker.resources | indent 10 }}
+        {{ end }}
+        env:
+{{ include "harvester.api-worker-env" . | indent 8 }}
+
+      - name: {{ .Release.Name }}-beat
+        image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+        imagePullPolicy: IfNotPresent
+        command:
+        - celery
+        - -A
+        - app.tasks
+        - beat
+        - --loglevel=INFO
+        ports:
+        - name: endpoint
+          containerPort: {{ .Values.port }}
+        {{ if ne .Values.environment "ci" }}
+        resources:
+{{ toYaml .Values.beat.resources | indent 10 }}
+        {{ end }}
+        env:
+{{ include "harvester.base-env" . | indent 8 }}

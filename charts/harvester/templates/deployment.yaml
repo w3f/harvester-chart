@@ -33,6 +33,8 @@ spec:
         - -c
         - export PYTHONPATH=/usr/src/app:/usr/src/app/py-substrate-interface/:/usr/src/app/py-scale-codec/:$PYTHONPATH;
           alembic upgrade head
+        env:
+{{ include "harvester.api-worker-env" . | indent 8 }}
       containers:
       - name: {{ .Release.Name }}-api
         image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
@@ -76,7 +78,6 @@ spec:
         {{ end }}
         env:
 {{ include "harvester.api-worker-env" . | indent 8 }}
-
       - name: {{ .Release.Name }}-beat
         image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent

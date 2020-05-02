@@ -22,3 +22,20 @@ resources:
   requests:
     cpu: 100m
     memory: 500Mi
+
+celery:
+  broker: "redis://watchtower-redis:6379/0"
+  backend: "redis://watchtower-redis:6379/0"
+
+substrate:
+  addressType: 2
+  metadataVersion: 11
+
+typeRegistry: kusama
+
+api:
+  resources: {}
+worker:
+  resources: {}
+beat:
+  resources: {}

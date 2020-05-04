@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "harvester.api-name" . }}
+  labels:
+    app: {{ include "harvester.api-name" . }}
+spec:
+  ports:
+  - name: endpoint
+    port: {{ .Values.port }}
+  selector:
+    app: {{ include "harvester.api-name" . }}

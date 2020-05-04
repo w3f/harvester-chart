@@ -11,6 +11,8 @@ image:
   repo: parity/polkadot
   tag: v0.7.32
 local: true
-unsafeEndpointAccess: true
+unsafeEndpointAccess: false
 sessionInjection:
   enabled: false
+extraArgs:
+  common: "--pruning=archive"

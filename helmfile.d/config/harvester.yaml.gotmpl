@@ -18,3 +18,9 @@ polkadotRPC: "http://kusama-internal-rpc:9933"
 celery:
   broker: "redis://redis-headless:6379/0"
   backend: "redis://redis-headless:6379/0"
+
+substrate:
+  metadataVersion: 9
+
+worker:
+  replicas: 3

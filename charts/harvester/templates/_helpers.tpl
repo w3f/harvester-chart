@@ -12,6 +12,8 @@
   value: {{ .Values.substrate.metadataVersion | quote }}
 - name: TYPE_REGISTRY
   value: {{ .Values.typeRegistry | quote }}
+- name: NEW_SESSION_EVENT_HANDLER
+  value: "False"
 {{- end -}}
 
 {{/* Returns environment variables for api and worker containers */}}
@@ -32,5 +34,21 @@
       key: db-password
 - name: DB_NAME
   value: {{ .Values.db.name | quote }}
+- name: BALANCE_SYSTEM_ACCOUNT_MIN_BLOCK
+  value: "1375086"
+- name: NEW_SESSION_EVENT_HANDLER
+  value: "True"
 {{ include "harvester.base-env" . }}
+{{- end -}}
+
+{{- define "harvester.api-name" -}}
+{{ .Release.Name }}-api
+{{- end -}}
+
+{{- define "harvester.worker-name" -}}
+{{ .Release.Name }}-worker
+{{- end -}}
+
+{{- define "harvester.beat-name" -}}
+{{ .Release.Name }}-beat
 {{- end -}}

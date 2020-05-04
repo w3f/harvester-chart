@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "harvester.beat-name" . }}
+  labels:
+    app: {{ include "harvester.beat-name" . }}
+spec:
+  replicas: {{ .Values.beat.replicas }}
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ include "harvester.beat-name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "harvester.beat-name" . }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      containers:
+      - name: {{ include "harvester.beat-name" . }}
+        image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+        imagePullPolicy: IfNotPresent
+        command:
+        - celery
+        - -A
+        - app.tasks
+        - beat
+        - --loglevel=INFO
+        ports:
+        - name: endpoint
+          containerPort: {{ .Values.port }}
+        {{ if ne .Values.environment "ci" }}
+        resources:
+{{ toYaml .Values.beat.resources | indent 10 }}
+        {{ end }}
+        env:
+{{ include "harvester.base-env" . | indent 8 }}

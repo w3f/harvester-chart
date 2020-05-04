@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "harvester.worker-name" . }}
+  labels:
+    app: {{ include "harvester.worker-name" . }}
+spec:
+  replicas: {{ .Values.worker.replicas }}
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ include "harvester.worker-name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "harvester.worker-name" . }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+     containers:
+      - name: {{ include "harvester.worker-name" . }}
+        image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+        imagePullPolicy: IfNotPresent
+        command:
+        - celery
+        - -A
+        - app.tasks
+        - worker
+        - --loglevel=INFO
+        ports:
+        - name: endpoint
+          containerPort: {{ .Values.port }}
+        {{ if ne .Values.environment "ci" }}
+        resources:
+{{ toYaml .Values.worker.resources | indent 10 }}
+        {{ end }}
+        env:
+{{ include "harvester.api-worker-env" . | indent 8 }}

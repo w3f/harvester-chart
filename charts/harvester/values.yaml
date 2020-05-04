@@ -34,8 +34,11 @@ substrate:
 typeRegistry: kusama
 
 api:
+  replicas: 1
   resources: {}
 worker:
+  replicas: 1
   resources: {}
 beat:
+  replicas: 1
   resources: {}

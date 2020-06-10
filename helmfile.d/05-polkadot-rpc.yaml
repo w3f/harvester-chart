@@ -10,6 +10,6 @@ releases:
 - name: kusama-internal
   chart: w3f/polkadot
   namespace: harvester
-  version: v0.20.2
+  version: v0.27.2
   values:
   - ./config/kusama-internal.yaml.gotmpl

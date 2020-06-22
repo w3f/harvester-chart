@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function release-atch(){
+function release-patch(){
   local latest_upstream=$1
   echo "patching... harvester-chart"
   sed -i "/tag:/c\  tag: $latest_upstream" helmfile.d/config/kusama-internal.yaml.gotmpl

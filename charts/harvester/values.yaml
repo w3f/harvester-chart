@@ -24,12 +24,12 @@ resources:
     memory: 500Mi
 
 celery:
-  broker: "redis://watchtower-redis:6379/0"
-  backend: "redis://watchtower-redis:6379/0"
+  broker: "redis://harvester-redis:6379/0"
+  backend: "redis://harvester-redis:6379/0"
 
 substrate:
   addressType: 2
-  metadataVersion: 11
+  metadataVersion: 9
 
 typeRegistry: kusama
 

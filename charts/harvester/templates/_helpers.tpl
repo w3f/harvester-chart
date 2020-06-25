@@ -13,7 +13,9 @@
 - name: TYPE_REGISTRY
   value: {{ .Values.typeRegistry | quote }}
 - name: NEW_SESSION_EVENT_HANDLER
-  value: "False"
+  value: "True"
+- name: FINALIZATION_ONLY
+  value: "1"
 {{- end -}}
 
 {{/* Returns environment variables for api and worker containers */}}
@@ -34,10 +36,15 @@
       key: db-password
 - name: DB_NAME
   value: {{ .Values.db.name | quote }}
+{{- if eq .Values.typeRegistry "kusama" }}
 - name: BALANCE_SYSTEM_ACCOUNT_MIN_BLOCK
   value: "1375086"
-- name: NEW_SESSION_EVENT_HANDLER
-  value: "True"
+{{- else }}
+- name: SUBSTRATE_STORAGE_BALANCE
+  value: Account
+- name: SUBSTRATE_STORAGE_INDICES
+  value: Accounts
+{{- end }}
 {{ include "harvester.base-env" . }}
 {{- end -}}
 

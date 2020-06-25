@@ -15,7 +15,7 @@
 - name: NEW_SESSION_EVENT_HANDLER
   value: "True"
 - name: FINALIZATION_ONLY
-  value: 1
+  value: "1"
 {{- end -}}
 
 {{/* Returns environment variables for api and worker containers */}}

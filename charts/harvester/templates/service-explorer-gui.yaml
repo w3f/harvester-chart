@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "explorer.gui-name" . }}
+  labels:
+    app: {{ include "explorer.gui-name" . }}
+spec:
+  ports:
+  - name: endpoint
+    port: {{ .Values.explorerGui.port }}
+  selector:
+    app: {{ include "explorer.gui-name" . }}

@@ -31,6 +31,8 @@ spec:
       containers:
       - name: {{ include "explorer.api-name" . }}
         image: {{ .Values.explorerApi.image.repo }}:{{ .Values.explorerApi.image.tag }}
+        command:
+        - "/usr/src/app/start.sh"
         imagePullPolicy: IfNotPresent
         ports:
         - name: endpoint

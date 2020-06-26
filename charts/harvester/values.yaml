@@ -42,3 +42,19 @@ worker:
 beat:
   replicas: 1
   resources: {}
+
+explorerApi:
+  port: 8080
+  image:
+    repo: polkascan/pre-explorer-api
+    tag: latest
+
+explorerGui:
+  port: 80
+  image:
+    repo: polkascan/pre-explorer-gui
+    tag: latest
+
+networkToken:
+  symbol: KSM
+  decimals: 12

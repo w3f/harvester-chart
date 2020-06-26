@@ -4,15 +4,15 @@ p2pPort: 30333
 chainspec:
   custom: false
   preset: true
-  name: "kusama"
-validator: false
+  name: "kusama-dev"
+validator: true
 extraBootnodes: []
 image:
   repo: parity/polkadot
   tag: v0.8.12
 local: true
-unsafeEndpointAccess: false
+unsafeEndpointAccess: true
 sessionInjection:
   enabled: false
 extraArgs:
-  common: "--pruning=archive"
+  common: "--alice"

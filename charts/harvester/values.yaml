@@ -71,4 +71,4 @@ explorerGui:
 
 networkToken:
   symbol: KSM
-  decimals: 12
+  decimals: "12"

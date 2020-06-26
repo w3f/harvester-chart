@@ -79,7 +79,7 @@
 - name: NETWORK_TOKEN_DECIMALS
   value: {{ .Values.networkToken.decimals }}
 - name: NETWORK_COLOR_CODE
-  value: 000000
+  value: "000000"
 - name: API_URL
   value: "http://{{ include "explorer.api-name" . }}:{{ .Values.explorerApi.port }}/api/v1"
 {{- end -}}

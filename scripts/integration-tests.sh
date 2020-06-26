@@ -22,7 +22,7 @@ main(){
 
     kubectl create namespace harvester
 
-    source /scripts/build-helmfile.sh
+    /scripts/build-helmfile.sh
 
     run_tests
 }

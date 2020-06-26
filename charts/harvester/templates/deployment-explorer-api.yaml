@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "explorer.api-name" . }}
+  labels:
+    app: {{ include "explorer.api-name" . }}
+spec:
+  replicas: {{ .Values.api.replicas }}
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ include "explorer.api-name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "explorer.api-name" . }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    spec:
+      initContainers:
+      - name: wait-for-mariadb
+        image: mysql
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - while ! mysqladmin ping -h"{{ .Values.db.host }}" --protocol=tcp -u "${DB_USERNAME}" -p"${DB_PASSWORD}" --silent; do sleep 3; done;
+        env:
+{{ include "explorer.api-env" . | indent 8 }}
+      containers:
+      - name: {{ include "explorer.api-name" . }}
+        image: {{ .Values.explorerApi.image.repo }}:{{ .Values.explorerApi.image.tag }}
+        command:
+        - "/usr/src/app/start.sh"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: endpoint
+          containerPort: {{ .Values.explorerApi.port }}
+        {{ if ne .Values.environment "ci" }}
+        resources:
+{{ toYaml .Values.explorerApi.resources | indent 10 }}
+        {{ end }}
+        env:
+{{ include "explorer.api-env" . | indent 8 }}

@@ -7,6 +7,8 @@ run_tests() {
     echo Running tests...
 
     wait_pod_ready harvester-api harvester
+    wait_pod_ready harvester-explorer-api harvester
+    wait_pod_ready harvester-explorer-gui harvester
 }
 
 teardown() {
@@ -20,7 +22,7 @@ main(){
 
     kubectl create namespace harvester
 
-    source /scripts/build-helmfile.sh
+    /scripts/build-helmfile.sh
 
     run_tests
 }

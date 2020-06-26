@@ -7,8 +7,8 @@ run_tests() {
     echo Running tests...
 
     wait_pod_ready harvester-api harvester
-    wait_pod_ready explorer-api harvester
-    wait_pod_ready explorer-gui harvester
+    wait_pod_ready harvester-explorer-api harvester
+    wait_pod_ready harvester-explorer-gui harvester
 }
 
 teardown() {

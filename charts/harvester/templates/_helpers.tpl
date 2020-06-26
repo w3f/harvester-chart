@@ -77,7 +77,7 @@
 - name: NETWORK_TOKEN_SYMBOL
   value: {{ .Values.networkToken.symbol }}
 - name: NETWORK_TOKEN_DECIMALS
-  value: {{ .Values.networkToken.decimals }}
+  value: {{ .Values.networkToken.decimals | quote }}
 - name: NETWORK_COLOR_CODE
   value: "000000"
 - name: API_URL

@@ -48,12 +48,26 @@ explorerApi:
   image:
     repo: polkascan/pre-explorer-api
     tag: latest
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
 
 explorerGui:
   port: 80
   image:
     repo: polkascan/pre-explorer-gui
     tag: latest
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
 
 networkToken:
   symbol: KSM

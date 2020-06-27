@@ -1,0 +1,19 @@
+{{- if .Values.worker.startCronjob.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  schedule: {{ .Values.worker.startCronjob.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ .Release.Name }}
+            image: busybox
+            command: ["/bin/sh"]
+            args:
+            - -c
+            - curl -v -X POST http://{{ include "harvester.api-name" . }}:8000/start
+{{- end }}

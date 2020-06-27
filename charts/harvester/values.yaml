@@ -59,8 +59,8 @@ explorerApi:
 explorerGui:
   port: 80
   image:
-    repo: polkascan/pre-explorer-gui
-    tag: latest
+    repo: web3f/polkascan-explorer-gui
+    tag: engineering-kusama-70f94ec0af64ffc71114d499bfaeca209bfc3fa7
   resources:
     limits:
       cpu: 100m

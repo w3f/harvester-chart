@@ -6,9 +6,9 @@ source /scripts/bootstrap-helm.sh
 run_tests() {
     echo Running tests...
 
-    wait_pod_ready harvester-api harvester
-    wait_pod_ready harvester-explorer-api harvester
-    wait_pod_ready harvester-explorer-gui harvester
+    wait_pod_ready kusama-harvester-api harvester
+    wait_pod_ready kusama-harvester-explorer-api harvester
+    wait_pod_ready kusama-harvester-explorer-gui harvester
 }
 
 teardown() {

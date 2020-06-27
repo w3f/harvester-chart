@@ -16,4 +16,5 @@ spec:
             args:
             - -c
             - curl -v -X POST http://{{ include "harvester.api-name" . }}:8000/start
+          restartPolicy: Never
 {{- end }}

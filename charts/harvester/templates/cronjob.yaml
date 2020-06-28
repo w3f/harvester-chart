@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ include "harvester.worker-cronjob-name" . }}
 spec:
   schedule: {{ .Values.worker.startCronjob.schedule | quote }}
   jobTemplate:
@@ -10,7 +10,7 @@ spec:
       template:
         spec:
           containers:
-          - name: {{ .Release.Name }}
+          - name: {{ include "harvester.worker-cronjob-name" . }}
             image: busybox
             command: ["/bin/sh"]
             args:

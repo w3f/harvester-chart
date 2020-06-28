@@ -15,6 +15,6 @@ spec:
             command: ["/bin/sh"]
             args:
             - -c
-            - wget --post-data '' -O - http://{{ include "harvester.api-name" . }}:8000/start > /dev/null
+            - wget -q -O - --post-data '' http://{{ include "harvester.api-name" . }}:8000/start
           restartPolicy: Never
 {{- end }}

@@ -46,7 +46,7 @@ spec:
           containerPort: {{ .Values.port }}
         readinessProbe:
           httpGet:
-            path: /status
+            path: /queue
             port: {{ .Values.port }}
           initialDelaySeconds: 20
           timeoutSeconds: 200

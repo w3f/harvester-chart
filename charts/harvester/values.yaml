@@ -46,31 +46,32 @@ beat:
   replicas: 1
   resources: {}
 
-explorerApi:
-  port: 8080
-  image:
-    repo: polkascan/pre-explorer-api
-    tag: latest
-  resources:
-    limits:
-      cpu: 100m
-      memory: 100Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
-
-explorerGui:
-  port: 80
-  image:
-    repo: polkascan/pre-explorer-gui
-    tag: latest
-  resources:
-    limits:
-      cpu: 100m
-      memory: 100Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
+explorer:
+  enabled: false
+  api:
+    port: 8080
+    image:
+      repo: polkascan/pre-explorer-api
+      tag: latest
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+  gui:
+    port: 80
+    image:
+      repo: polkascan/pre-explorer-gui
+      tag: latest
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
 
 networkToken:
   symbol: KSM

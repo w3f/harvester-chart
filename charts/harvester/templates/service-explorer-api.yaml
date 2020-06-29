@@ -1,3 +1,4 @@
+{{- if .Values.explorer.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,6 +8,7 @@ metadata:
 spec:
   ports:
   - name: endpoint
-    port: {{ .Values.explorerApi.port }}
+    port: {{ .Values.explorer.api.port }}
   selector:
     app: {{ include "explorer.api-name" . }}
+{{- end }}

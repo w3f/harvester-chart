@@ -1,3 +1,4 @@
+{{- if .Values.explorer.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,14 +22,15 @@ spec:
     spec:
       containers:
       - name: {{ include "explorer.gui-name" . }}
-        image: {{ .Values.explorerGui.image.repo }}:{{ .Values.explorerGui.image.tag }}
+        image: {{ .Values.explorer.gui.image.repo }}:{{ .Values.explorer.gui.image.tag }}
         imagePullPolicy: IfNotPresent
         ports:
         - name: endpoint
-          containerPort: {{ .Values.explorerGui.port }}
+          containerPort: {{ .Values.explorer.gui.port }}
         {{ if ne .Values.environment "ci" }}
         resources:
-{{ toYaml .Values.explorerGui.resources | indent 10 }}
+{{ toYaml .Values.explorer.gui.resources | indent 10 }}
         {{ end }}
         env:
 {{ include "explorer.gui-env" . | indent 8 }}
+{{- end }}

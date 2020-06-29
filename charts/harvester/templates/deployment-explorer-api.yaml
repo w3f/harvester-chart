@@ -1,3 +1,4 @@
+{{- if .Values.explorer.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,16 +31,17 @@ spec:
 {{ include "explorer.api-env" . | indent 8 }}
       containers:
       - name: {{ include "explorer.api-name" . }}
-        image: {{ .Values.explorerApi.image.repo }}:{{ .Values.explorerApi.image.tag }}
+        image: {{ .Values.explorer.api.image.repo }}:{{ .Values.explorer.api.image.tag }}
         command:
         - "/usr/src/app/start.sh"
         imagePullPolicy: IfNotPresent
         ports:
         - name: endpoint
-          containerPort: {{ .Values.explorerApi.port }}
+          containerPort: {{ .Values.explorer.api.port }}
         {{ if ne .Values.environment "ci" }}
         resources:
-{{ toYaml .Values.explorerApi.resources | indent 10 }}
+{{ toYaml .Values.explorer.api.resources | indent 10 }}
         {{ end }}
         env:
 {{ include "explorer.api-env" . | indent 8 }}
+{{- end }}

@@ -81,7 +81,7 @@
 - name: NETWORK_COLOR_CODE
   value: "000000"
 - name: API_URL
-  value: "http://{{ include "explorer.api-name" . }}:{{ .Values.explorerApi.port }}/api/v1"
+  value: "http://{{ include "explorer.api-name" . }}:{{ .Values.explorer.api.port }}/api/v1"
 {{- end -}}
 
 {{- define "explorer.api-name" -}}

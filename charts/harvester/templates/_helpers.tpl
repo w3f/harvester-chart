@@ -104,3 +104,7 @@
 {{- define "harvester.beat-name" -}}
 {{ .Release.Name }}-beat
 {{- end -}}
+
+{{- define "harvester.worker-cronjob-name" -}}
+{{ .Release.Name }}-worker-start
+{{- end -}}

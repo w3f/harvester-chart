@@ -37,6 +37,9 @@ api:
   replicas: 1
   resources: {}
 worker:
+  startCronjob:
+    enabled: false
+    schedule: "*/15 * * * *"
   replicas: 1
   resources: {}
 beat:

@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
+echo Patching...
 
-patch(){
- local LATEST_UPSTREAM=$1
-
- sed -i "/tag:/c\  tag: $LATEST_UPSTREAM" helmfile.d/config/kusama-internal.yaml.gotmpl
-}
+sed -i "/tag:/c\  tag: $latest_upstream" helmfile.d/config/kusama-internal.yaml.gotmpl

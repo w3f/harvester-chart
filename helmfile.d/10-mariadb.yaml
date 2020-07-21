@@ -10,5 +10,6 @@ releases:
 - name: mariadb
   namespace: harvester
   chart: bitnami/mariadb
+  version: 7.6.1
   values:
   - ./config/mariadb.yaml.gotmpl

@@ -17,11 +17,11 @@ port: 8000
 
 resources:
   limits:
-    cpu: 100m
-    memory: 500Mi
+    cpu: 200m
+    memory: 900Mi
   requests:
-    cpu: 100m
-    memory: 500Mi
+    cpu: 200m
+    memory: 900Mi
 
 celery:
   broker: "redis://harvester-redis:6379/0"
